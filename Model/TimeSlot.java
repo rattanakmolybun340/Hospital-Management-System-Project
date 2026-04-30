@@ -146,4 +146,15 @@ public class TimeSlot {
         String status = isAvailable ? "Available" : "Booked";
         return date + " | " + start + " - " + end + " | " + status;
     }
+    public boolean bookSlot() {
+        if (isAvailable) {
+            isAvailable = false;
+            return true;
+        }
+        return false;
+    }
+
+    public void releaseSlot() {
+        isAvailable = true;
+    }
 }

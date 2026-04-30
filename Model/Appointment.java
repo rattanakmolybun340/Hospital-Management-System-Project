@@ -24,7 +24,7 @@ public class Appointment {
     private TimeSlot timeSlot;                  // When the appointment is scheduled
     private AppointmentStatus status;           // Current state of the appointment
     private double fee;                         // Cost of the appointment
-
+    private static int totalAppointmentsCreated = 0;
     /**
      * Constructor: Creates an Appointment linking Patient, Doctor, and TimeSlot
      * @param id Unique appointment identifier
@@ -40,6 +40,7 @@ public class Appointment {
         this.status = AppointmentStatus.BOOKED; // New appointments start as BOOKED
         // Fee is calculated based on the doctor's hourly rate at time of booking
         this.fee = (doctor != null) ? doctor.getHourlyRate() : 0.0;
+        totalAppointmentsCreated++;
     }
 
     // --- SETTERS (Mutators) with Business Logic ---
@@ -196,7 +197,9 @@ public class Appointment {
     public double getFee() {
         return fee * 1.10;
     }
-
+    public static int getTotalAppointmentsCreated() { 
+        return totalAppointmentsCreated;
+    }
     /**
      * Gets the appointment fee without tax
      * @return Base fee from doctor's hourly rate

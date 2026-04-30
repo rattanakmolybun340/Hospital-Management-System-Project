@@ -23,7 +23,7 @@ public class Doctor {
     private String name;
     private String specialist;
     private double hourlyRate;
-    private List<Schedule> availability;      // Doctor's working schedule
+    private Schedule schedule;       // Doctor's working schedule
     private List<Appointment> appointments;    // Doctor's scheduled appointments
     
     // Private static field - tracks total doctors created
@@ -36,12 +36,12 @@ public class Doctor {
      * @param hourlyRate Doctor's hourly rate (requires admin password to modify)
      * @param availability List of Schedule objects showing doctor's availability
      */
-    public Doctor(String name, String specialist, double hourlyRate, List<Schedule> availability) {
+    public Doctor(String name, String specialist, double hourlyRate, Schedule schedule) {
         // Even the constructor should use the setters to ensure validation logic is applied immediately
         setName(name);
         setSpecialist(specialist);
         this.hourlyRate = hourlyRate;
-        setAvailability(availability);
+        setSchedule(schedule);
         this.appointments = new ArrayList<>();  // Initialize empty appointment list
         doctorCount++;
     }
@@ -103,14 +103,11 @@ public class Doctor {
      * Condition: A doctor must have at least an empty list to avoid NullPointerException
      * @param availability List of Schedule objects
      */
-    public void setAvailability(List<Schedule> availability) {
-        // Condition: A doctor must have at least one day assigned, or the list must not be null
-        if (availability == null || availability.isEmpty()) {
+    public void setSchedule(Schedule schedule) {
+        if (schedule == null) {
             System.out.println("Warning: Doctor has no assigned schedule.");
-            this.availability = new ArrayList<>(); // Initialize empty list to avoid NullPointerErrors
-        } else {
-            this.availability = availability;
-        }
+        } 
+        this.schedule = schedule;
     }
 
     // --- GETTERS (Accessors) with Business Logic ---
@@ -151,12 +148,8 @@ public class Doctor {
      * Condition: Logic to ensure we don't return a null list that might crash the app
      * @return List of Schedule objects
      */
-    public List<Schedule> getAvailability() {
-        // Condition: Logic to ensure we don't return a null list that might crash the app
-        if (this.availability == null) {
-            return new ArrayList<>();
-        }
-        return availability;
+    public Schedule getSchedule() {
+        return schedule;
     }
 
     /**
@@ -340,9 +333,9 @@ public class Doctor {
      * Gets count of available time slots across all schedules
      * @return Number of available slots
      */
-    public int getAvailableSlotCount() {
+public int getAvailableSlotCount() {
         int count = 0;
-        for (Schedule schedule : availability) {
+        if (schedule != null && schedule.getSlots() != null) {
             for (TimeSlot slot : schedule.getSlots()) {
                 if (slot.isAvailable()) {
                     count++;
