@@ -287,7 +287,7 @@ public class Doctor {
         }
         
         appointments.add(appointment);
-        System.out.println("Appointment successfully booked with Dr. " + this.name.split(" ")[0]);
+        System.out.println("Appointment successfully booked with " + this.getName());
         return true;
     }
 
